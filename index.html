@@ -1,826 +1,719 @@
 <!DOCTYPE html>
-<html lang="zh">
-
+<html lang="zh-CN">
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>反英雄叙事｜那些不被看见的胜利</title>
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<style>
+:root{
+  --bg:#040914;
+  --panel:rgba(16,36,62,.88);
+  --glass:rgba(255,255,255,.05);
+  --blue:#5fd3ff;
+  --gold:#f2d58b;
+  --text:#eef6ff;
+  --sub:#9fb6c9;
+}
 
+*{box-sizing:border-box}
+body{margin:0;font-family:"Noto Serif SC","Songti SC","Microsoft YaHei",serif;
+  background:radial-gradient(circle at 20% -10%,#102b4a,var(--bg) 65%),radial-gradient(circle at 85% 120%,#071a33,var(--bg) 70%);
+  color:var(--text);line-height:2.25;
+}
+body::before{
+  content:"";position:fixed;inset:0;background:url("https://i.imgur.com/oTg2YhO.png") repeat;opacity:.08;pointer-events:none;
+}
 
+/* 导航 */
+nav{
+  position:sticky;top:0;z-index:20;padding:18px 36px;
+  background:rgba(4,10,22,.82);backdrop-filter:blur(18px);
+  display:flex;align-items:center;
+}
+nav .title{color:var(--blue);letter-spacing:4px;font-weight:bold;}
+nav .author{margin-left:auto;font-size:13px;color:#7fbfe6;}
+
+/* Hero */
+header{
+  min-height:94vh;position:relative;display:flex;align-items:center;justify-content:center;text-align:center;
+}
+header::before{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(to bottom,rgba(4,9,20,.25),rgba(4,9,20,.92)),url("/mnt/data/A74C1F62-0615-4AB9-A1A1-CA0B52B2CF97.jpeg") center/cover no-repeat;
+}
+header::after{
+  content:"";position:absolute;inset:0;background:radial-gradient(circle at center,rgba(95,211,255,.12),transparent 65%);
+}
+header .inner{position:relative;z-index:2;max-width:860px;padding:0 24px;}
+header h1{font-size:62px;letter-spacing:14px;margin:0;text-shadow:0 0 50px rgba(95,211,255,.85);}
+header h1 span{color:var(--gold)}
+header p{margin-top:36px;font-size:20px;color:var(--sub);letter-spacing:2px;}
+
+/* 主体 */
+main{max-width:980px;margin:auto;padding:100px 24px 180px;}
+
+/* 导航按钮 */
+.nav-buttons{display:flex;gap:12px;justify-content:center;margin-bottom:30px;}
+.nav-buttons a{
+  padding:10px 18px;background-color:var(--blue);color:#fff;text-decoration:none;font-size:14px;
+  border-radius:4px;border:1px solid #2980b9;transition:.15s;cursor:pointer;
+}
+.nav-buttons a:hover{background-color:#2980b9;}
+
+/* 作者标注 */
+.author-label{text-align:center;font-size:16px;font-weight:bold;color:var(--gold);margin:0 0 30px;}
+
+/* 卡片 / Section */
+section{
+  position:relative;background:var(--panel);border-radius:32px;padding:64px;margin-bottom:150px;box-shadow:0 0 80px rgba(0,0,0,.55);
+  transform: translateX(100%); /* 初始状态将所有界面移动到右边 */
+  opacity: 0; /* 初始状态为完全透明 */
+  transition: transform 0.7s ease, opacity 0.7s ease; /* 动画过渡 */
+}
+section.active{
+  transform: translateX(0); /* 激活时恢复到正常位置 */
+  opacity: 1; /* 激活时恢复不透明 */
+}
+section::before{
+  content:"";position:absolute;left:-24px;top:40px;bottom:40px;width:2px;background:linear-gradient(to bottom,transparent,var(--blue),transparent);opacity:.35;
+}
+section h2{margin-top:0;font-size:34px;color:var(--blue);letter-spacing:2px;}
+section p{color:var(--sub);font-size:17px;margin:22px 0;}
+.preface{background:linear-gradient(to bottom right,rgba(255,255,255,.07),rgba(255,255,255,.02));}
+.preface p{font-size:17.5px;}
+blockquote{margin:48px 0;padding:36px 42px;background:var(--glass);border-left:6px solid var(--gold);font-style:italic;color:#cfe6f7;}
+.sign{margin-top:40px;font-weight:bold;color:var(--gold);letter-spacing:2px;}
+
+/* 新增学术内容的深度和美化 */
+.academic-section {
+  background: rgba(0, 0, 0, 0.75);
+  padding: 48px;
+  border-radius: 16px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+}
+.academic-section h3 {
+  font-size: 30px;
+  color: var(--gold);
+  letter-spacing: 3px;
+  margin-bottom: 20px;
+}
+.academic-section p {
+  font-size: 18px;
+  color: var(--sub);
+  line-height: 1.75;
+  margin-bottom: 20px;
+}
+.academic-section .quote {
+  font-size: 20px;
+  font-style: italic;
+  color: var(--blue);
+  margin: 20px 0;
+  padding-left: 30px;
+  border-left: 5px solid var(--blue);
+}
+.academic-section .references {
+  list-style-type: none;
+  padding-left: 0;
+  margin-top: 20px;
+}
+.academic-section .references li {
+  font-size: 16px;
+  color: var(--gold);
+  margin-bottom: 8px;
+}
+.academic-section .references li a {
+  color: var(--blue);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+.academic-section .references li a:hover {
+  color: var(--gold);
+}
+
+/* 添加图表的样式 */
+.chart-container {
+  margin-top: 40px;
+  position: relative;
+  padding: 40px;
+  background: var(--panel);
+  border-radius: 16px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+.chart-container h4 {
+  color: var(--gold);
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+/* =========================
+   Academic (Publish-grade)
+   ========================= */
+
+:root{
+  --ink:#dbe9ff;
+  --muted:#a9bed6;
+  --line:rgba(95,211,255,.22);
+  --paper:rgba(7,18,38,.55);
+  --paper2:rgba(255,255,255,.04);
+  --chip:rgba(95,211,255,.12);
+  --danger:#ff6b6b;
+}
+
+.academic-wrap{
+  margin-top:44px;
+  padding:44px 44px 34px;
+  border-radius:26px;
+  background:
+    radial-gradient(1200px 380px at 15% 0%, rgba(95,211,255,.10), transparent 55%),
+    radial-gradient(900px 340px at 85% 18%, rgba(242,213,139,.10), transparent 50%),
+    linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+  box-shadow: 0 22px 80px rgba(0,0,0,.52);
+  border:1px solid rgba(255,255,255,.06);
+  position:relative;
+  overflow:hidden;
+}
+
+.academic-wrap::before{
+  content:"";
+  position:absolute; inset:-2px;
+  background:
+    linear-gradient(90deg, transparent, rgba(95,211,255,.22), transparent);
+  opacity:.14;
+  transform:skewY(-2deg);
+  pointer-events:none;
+}
+
+.academic-kicker{
+  display:flex; align-items:center; gap:12px;
+  color:var(--gold);
+  letter-spacing:3px;
+  font-weight:700;
+  margin:0 0 18px;
+}
+.academic-kicker .dot{
+  width:10px;height:10px;border-radius:999px;background:var(--gold);
+  box-shadow:0 0 18px rgba(242,213,139,.55);
+}
+.academic-title{
+  margin:0 0 12px;
+  font-size:28px;
+  color:var(--blue);
+  letter-spacing:2px;
+  text-shadow:0 0 28px rgba(95,211,255,.25);
+}
+.academic-subtitle{
+  margin:0 0 26px;
+  color:var(--muted);
+  font-size:15.5px;
+  letter-spacing:1px;
+}
+
+.academic-grid{
+  display:grid;
+  grid-template-columns: 1.1fr .9fr;
+  gap:22px;
+}
+@media (max-width: 900px){
+  .academic-grid{ grid-template-columns: 1fr; }
+  .academic-wrap{ padding:34px 22px 26px; }
+}
+
+.academic-card{
+  background:linear-gradient(180deg, rgba(7,18,38,.55), rgba(255,255,255,.02));
+  border:1px solid rgba(255,255,255,.06);
+  border-radius:22px;
+  padding:26px 26px 22px;
+  position:relative;
+  box-shadow:0 14px 50px rgba(0,0,0,.35);
+}
+.academic-card::after{
+  content:"";
+  position:absolute; left:22px; right:22px; bottom:-1px; height:1px;
+  background:linear-gradient(90deg, transparent, rgba(95,211,255,.35), transparent);
+  opacity:.55;
+}
+
+.academic-h3{
+  margin:0 0 12px;
+  font-size:18px;
+  color:#d6f2ff;
+  letter-spacing:1px;
+  display:flex; align-items:center; gap:10px;
+}
+.academic-h3 .tag{
+  font-size:12px;
+  padding:6px 10px;
+  border-radius:999px;
+  background:var(--chip);
+  color:#cfeeff;
+  border:1px solid rgba(95,211,255,.22);
+  letter-spacing:1px;
+}
+
+.academic-text{
+  margin:0 0 14px;
+  color:var(--muted);
+  font-size:15.8px;
+  line-height:1.9;
+}
+.academic-text strong{ color:var(--ink); font-weight:700; }
+
+.term-chips{
+  display:flex; flex-wrap:wrap; gap:10px;
+  margin:14px 0 0;
+}
+.term-chips .chip{
+  font-size:12.5px;
+  padding:7px 10px;
+  border-radius:999px;
+  background:rgba(255,255,255,.03);
+  border:1px solid rgba(255,255,255,.08);
+  color:#d3e6fb;
+  letter-spacing:.6px;
+}
+
+.quote-block{
+  margin:18px 0 6px;
+  padding:18px 18px 18px 20px;
+  border-radius:18px;
+  background:rgba(255,255,255,.03);
+  border:1px solid rgba(242,213,139,.20);
+  position:relative;
+}
+.quote-block::before{
+  content:"“";
+  position:absolute; left:14px; top:6px;
+  font-size:38px; color:rgba(242,213,139,.55);
+}
+.quote-block p{
+  margin:0;
+  color:#cfe6f7;
+  font-style:italic;
+  line-height:1.85;
+}
+.quote-attr{
+  margin-top:10px;
+  color:#9cc7e6;
+  font-size:13px;
+  letter-spacing:1px;
+}
+
+.academic-aside{
+  background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01));
+  border:1px solid rgba(255,255,255,.06);
+  border-radius:22px;
+  padding:22px 22px 18px;
+}
+.aside-title{
+  margin:0 0 10px;
+  color:var(--gold);
+  letter-spacing:2px;
+  font-weight:700;
+}
+.aside-list{
+  margin:0; padding-left:18px;
+  color:var(--muted);
+  line-height:1.85;
+  font-size:14.8px;
+}
+.aside-list li{ margin:10px 0; }
+
+.hr-soft{
+  height:1px;
+  margin:18px 0 16px;
+  background:linear-gradient(90deg, transparent, rgba(95,211,255,.28), transparent);
+  border:none;
+}
+
+/* Footnotes: clickable + tooltip */
+.fn{
+  font-size:.75em;
+  vertical-align:super;
+  margin-left:2px;
+}
+.fn a{
+  color:var(--gold);
+  text-decoration:none;
+  padding:2px 5px;
+  border-radius:8px;
+  border:1px solid rgba(242,213,139,.25);
+  background:rgba(242,213,139,.08);
+  transition:.16s;
+}
+.fn a:hover{
+  background:rgba(242,213,139,.14);
+  box-shadow:0 0 18px rgba(242,213,139,.18);
+}
+
+.fn a[data-note]{
+  position:relative;
+}
+.fn a[data-note]:hover::after{
+  content:attr(data-note);
+  position:absolute;
+  left:50%; transform:translateX(-50%);
+  bottom:160%;
+  width:min(360px, 70vw);
+  padding:12px 12px;
+  border-radius:14px;
+  background:rgba(5,12,26,.92);
+  color:#e7f3ff;
+  border:1px solid rgba(95,211,255,.22);
+  box-shadow:0 16px 50px rgba(0,0,0,.55);
+  font-size:12.8px;
+  line-height:1.6;
+  letter-spacing:.4px;
+  white-space:normal;
+  z-index:50;
+}
+
+/* Footnotes block */
+.footnotes-wrap{
+  margin-top:22px;
+  padding:18px 20px 14px;
+  border-radius:18px;
+  background:rgba(0,0,0,.25);
+  border:1px solid rgba(255,255,255,.06);
+}
+.footnotes-wrap h4{
+  margin:0 0 10px;
+  color:#cfeeff;
+  font-size:14px;
+  letter-spacing:2px;
+}
+.footnotes{
+  margin:0;
+  padding-left:18px;
+  color:var(--muted);
+  font-size:13.6px;
+  line-height:1.75;
+}
+.footnotes li{ margin:8px 0; }
+.footnotes a.back{
+  color:var(--blue);
+  text-decoration:none;
+  margin-left:8px;
+  opacity:.9;
+}
+.footnotes a.back:hover{ opacity:1; text-decoration:underline; }
+
+/* Bibliography styling */
+.biblio{
+  margin-top:14px;
+  padding:14px 16px;
+  border-radius:16px;
+  background:rgba(255,255,255,.02);
+  border:1px solid rgba(255,255,255,.06);
+}
+.biblio h4{
+  margin:0 0 10px;
+  color:var(--gold);
+  letter-spacing:2px;
+  font-size:14px;
+}
+.biblio ul{
+  margin:0; padding-left:18px;
+  color:var(--muted);
+  font-size:13.6px;
+  line-height:1.75;
+}
+.biblio li{ margin:7px 0; }
+
+</style>
 </head>
 
-
-
-
-<style>
-body {
-  font-family: "Microsoft YaHei", sans-serif;
-  margin: 0;
-  background: #101820;
-  color: #e6f4ff;
-}
-
-header {
-  background: linear-gradient(90deg, #0e6b9c, #409eff);
-  padding: 15px;
-  text-align: center;
-}
-
-nav a {
-  color: #fff;
-  margin: 0 12px;
-  text-decoration: none;
-  font-weight: bold;
-}
-
-nav a:hover {
-  text-shadow: 0 0 5px #b8f1ff;
-}
-
-.hero {
-  text-align: center;
-  padding: 60px;
-  background: url("bianqueBG.jpg") no-repeat center/cover;
-  background-color: #123;
-  color: #fff;
-}
-
-.grid {
-  display: flex;
-  justify-content: space-around;
-  padding: 30px 20px;
-}
-
-.card {
-  background: #1a2833;
-  padding: 20px;
-  border-radius: 8px;
-  width: 30%;
-  box-shadow: 0 0 12px rgba(0, 200, 255, 0.3);
-  transition: 0.25s;
-}
-
-.card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 0 18px rgba(0, 200, 255, 0.6);
-}
-
-article {
-  padding: 20px 30px;
-  line-height: 1.7em;
-}
-
-h1, h2, h3 {
-  color: #7dd1ff;
-}
-
-footer {
-  text-align: center;
-  padding: 20px;
-  background: #0e6b9c;
-  margin-top: 40px;
-}
-
-
-⸻
-/* === 整站基础 === */
-body {
-  font-family: "Microsoft YaHei", sans-serif;
-  margin: 0;
-  background: radial-gradient(circle at center, #0d1a27, #02070d);
-  color: #e8f8ff;
-}
-
-/* === 顶部栏 === */
-header {
-  background: linear-gradient(135deg, #074385, #0aa9ff, #0583c9);
-  padding: 18px 10px;
-  text-align: center;
-  box-shadow: 0 4px 16px rgba(0, 180, 255, 0.4);
-}
-
-header h1 {
-  margin: 0;
-  letter-spacing: 2px;
-  font-size: 26px;
-  font-weight: bold;
-  color: #d6f3ff;
-}
-
-/* === 导航菜单 === */
-nav a {
-  color: #fff;
-  margin: 0 15px;
-  text-decoration: none;
-  font-weight: bold;
-  font-size: 15px;
-  transition: 0.3s;
-}
-
-nav a:hover {
-  color: #aaf0ff;
-  text-shadow: 0 0 10px #6ff7ff;
-}
-
-/* === 首页大视觉 === */
-.hero {
-  text-align: center;
-  padding: 70px 30px;
-  background: url("bianqueBG.jpg") center/cover;
-  background-color: #123;
-  color: #fff;
-  box-shadow: inset 0 -20px 40px rgba(0,0,0,0.7);
-}
-
-.hero h2 {
-  font-size: 36px;
-  margin-bottom: 12px;
-  text-shadow: 0 0 15px #60eaff;
-}
-
-.hero p {
-  font-size: 18px;
-  opacity: 0.9;
-}
-
-/* === 首页卡片布局 === */
-.grid {
-  display: flex;
-  justify-content: space-around;
-  padding: 40px 25px;
-  flex-wrap: wrap;
-}
-
-.card {
-  background: rgba(10, 30, 50, 0.9);
-  padding: 25px;
-  border-radius: 10px;
-  width: 28%;
-  min-width: 260px;
-  margin: 15px;
-  box-shadow: 0 0 15px rgba(0, 150, 255, 0.4);
-  transition: 0.35s;
-  border: 1px solid rgba(0, 255, 255, 0.15);
-}
-
-.card:hover {
-  transform: translateY(-12px) scale(1.03);
-  box-shadow: 0 0 20px rgba(0, 220, 255, 0.7);
-  border-color: rgba(0, 255, 255, 0.4);
-}
-
-.card a {
-  color: #89e6ff;
-  font-size: 18px;
-  font-weight: bold;
-  text-decoration: none;
-}
-
-.card p {
-  color: #bfefff;
-  margin-top: 8px;
-}
-
-/* === 内容页 === */
-article {
-  padding: 25px 30px;
-  line-height: 1.8em;
-  max-width: 850px;
-  margin: auto;
-}
-
-h2, h3 {
-  color: #83e3ff;
-  text-shadow: 0 0 10px #004d6d;
-}
-
-/* === 页脚 === */
-footer {
-  text-align: center;
-  padding: 20px;
-  background: #042c48;
-  margin-top: 50px;
-  box-shadow: 0 -4px 10px rgba(0, 180, 255, 0.3);
-}
-
-footer a {
-  color: #78d8ff;
-  text-decoration: none;
-  font-weight: bold;
-}
-footer a:hover {
-  text-shadow: 0 0 10px #91f2ff;
-}
-/* === 全局背景光效 === */
-body {
-  font-family: "Microsoft YaHei", sans-serif;
-  margin: 0;
-  background: radial-gradient(circle at top, #0f2944, #020812, #000);
-  color: #e3faff;
-  overflow-x: hidden;
-}
-
-/* === 落下粒子光点背景 === */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background: url('https://i.imgur.com/oTg2YhO.png') repeat;
-  opacity: .25;
-  pointer-events: none;
-  animation: starsMove 60s linear infinite;
-}
-@keyframes starsMove {
-  from {background-position: 0 0;}
-  to {background-position: 10000px 10000px;}
-}
-
-/* === 顶部栏流光 === */
-header {
-  background: linear-gradient(100deg, #004e92, #0fa2ff, #0069b4);
-  background-size: 300% 300%;
-  animation: moveGlow 6s ease infinite;
-  padding: 18px;
-  text-align: center;
-  box-shadow: 0 0 25px rgba(0, 200, 255, 0.45);
-}
-@keyframes moveGlow {
-  0%{background-position:0% 50%}
-  50%{background-position:100% 50%}
-  100%{background-position:0% 50%}
-}
-
-header h1 {
-  margin: 0;
-  font-size: 28px;
-  letter-spacing: 2px;
-  text-shadow: 0 0 12px #69e0ff;
-}
-
-/* === 导航按钮升级 === */
-nav a {
-  color: #e8ffff;
-  margin: 0 12px;
-  text-decoration: none;
-  font-weight: bold;
-  font-size: 15px;
-  transition: .3s;
-  padding: 5px 10px;
-  border-radius: 6px;
-}
-nav a:hover {
-  color: #fff;
-  background: rgba(0,255,255,0.2);
-  box-shadow: 0 0 12px #56eaff;
-}
-
-/* === 英雄大图区域动态 === */
-.hero {
-  text-align: center;
-  padding: 85px 30px;
-  background: url("bianqueBG.jpg") center/cover no-repeat;
-  background-color: #123;
-  color: #fff;
-  position: relative;
-  box-shadow: inset 0 -30px 60px rgba(0,0,0,0.9);
-}
-
-/* 英雄标题呼吸光 */
-.hero h2 {
-  font-size: 40px;
-  margin: 0;
-  animation: glowText 2.5s ease-in-out infinite;
-}
-@keyframes glowText {
-  0%,100%{ text-shadow:0 0 10px #1be4ff }
-  50%{ text-shadow:0 0 30px #73ffff }
-}
-
-.hero p {
-  font-size: 20px;
-  opacity: .92;
-  margin-top: 12px;
-}
-
-/* === 首页卡片呼吸效果 === */
-.grid {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  padding: 40px 15px;
-}
-
-.card {
-  background: rgba(5, 25, 45, .85);
-  border: 1px solid rgba(0,200,255,.35);
-  border-radius: 12px;
-  width: 30%;
-  min-width: 260px;
-  margin: 18px;
-  padding: 25px;
-  box-shadow: 0 0 15px rgba(0,200,255,.5);
-  transition: .4s;
-  backdrop-filter: blur(4px);
-}
-
-.card:hover {
-  transform: translateY(-14px) scale(1.05);
-  box-shadow: 0 0 30px rgba(0,255,255,.8);
-  border-color: rgba(0,255,255,.85);
-}
-
-.card a {
-  color: #8deaff;
-  font-size: 20px;
-  text-decoration: none;
-  text-shadow: 0 0 10px rgba(100,255,255,.4);
-}
-
-.card p {
-  margin-top: 8px;
-  color: #b7ebff;
-}
-
-/* === 文章区阅读体验 === */
-article {
-  padding: 30px;
-  max-width: 900px;
-  margin: auto;
-  line-height: 1.9;
-  background: rgba(10,30,50,.45);
-  border-radius: 10px;
-  box-shadow: 0 0 20px rgba(0,200,255,.25);
-  backdrop-filter: blur(5px);
-}
-
-h2, h3 {
-  color: #7fe8ff;
-  text-shadow: 0 0 12px #009dbf;
-}
-
-/* === 页脚氛围边光 === */
-footer {
-  text-align: center;
-  padding: 18px;
-  background: #022235;
-  margin-top: 45px;
-  box-shadow: 0jpg
- -2px 25px rgba(0,200,255,.4);
-}
-footer a {
-  color: #91efff;
-  text-decoration: none;
-  font-weight: bold;
-}
-footer a:hover {
-  text-shadow: 0 0 12px #c1ffff;
-}
-body {
-    background-color: #f0f0f0;
-    font-family: Arial, sans-serif;
-}
-h1 {
-    color: blue;
-}
-/* 继续粘贴 CSS 文件里的全部内容 */
-</style>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<style>
-body {
-  font-family: "Microsoft YaHei", sans-serif;
-  margin: 0;
-  background: #101820;
-  color: #e6f4ff;
-}
-
-header {
-  background: linear-gradient(90deg, #0e6b9c, #409eff);
-  padding: 15px;
-  text-align: center;
-}
-
-nav a {
-  color: #fff;
-  margin: 0 12px;
-  text-decoration: none;
-  font-weight: bold;
-}
-
-nav a:hover {
-  text-shadow: 0 0 5px #b8f1ff;
-}
-
-.hero {
-  text-align: center;
-  padding: 60px;
-  background: url("bianqueBG.jpg") no-repeat center/cover;
-  background-color: #123;
-  color: #fff;
-}
-
-.grid {
-  display: flex;
-  justify-content: space-around;
-  padding: 30px 20px;
-}
-
-.card {
-  background: #1a2833;
-  padding: 20px;
-  border-radius: 8px;
-  width: 30%;
-  box-shadow: 0 0 12px rgba(0, 200, 255, 0.3);
-  transition: 0.25s;
-}
-
-.card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 0 18px rgba(0, 200, 255, 0.6);
-}
-
-article {
-  padding: 20px 30px;
-  line-height: 1.7em;
-}
-
-h1, h2, h3 {
-  color: #7dd1ff;
-}
-
-footer {
-  text-align: center;
-  padding: 20px;
-  background: #0e6b9c;
-  margin-top: 40px;
-}
-
-
-⸻
-/* === 整站基础 === */
-body {
-  font-family: "Microsoft YaHei", sans-serif;
-  margin: 0;
-  background: radial-gradient(circle at center, #0d1a27, #02070d);
-  color: #e8f8ff;
-}
-
-/* === 顶部栏 === */
-header {
-  background: linear-gradient(135deg, #074385, #0aa9ff, #0583c9);
-  padding: 18px 10px;
-  text-align: center;
-  box-shadow: 0 4px 16px rgba(0, 180, 255, 0.4);
-}
-
-header h1 {
-  margin: 0;
-  letter-spacing: 2px;
-  font-size: 26px;
-  font-weight: bold;
-  color: #d6f3ff;
-}
-
-/* === 导航菜单 === */
-nav a {
-  color: #fff;
-  margin: 0 15px;
-  text-decoration: none;
-  font-weight: bold;
-  font-size: 15px;
-  transition: 0.3s;
-}
-
-nav a:hover {
-  color: #aaf0ff;
-  text-shadow: 0 0 10px #6ff7ff;
-}
-
-/* === 首页大视觉 === */
-.hero {
-  text-align: center;
-  padding: 70px 30px;
-  background: url("bianqueBG.jpg") center/cover;
-  background-color: #123;
-  color: #fff;
-  box-shadow: inset 0 -20px 40px rgba(0,0,0,0.7);
-}
-
-.hero h2 {
-  font-size: 36px;
-  margin-bottom: 12px;
-  text-shadow: 0 0 15px #60eaff;
-}
-
-.hero p {
-  font-size: 18px;
-  opacity: 0.9;
-}
-
-/* === 首页卡片布局 === */
-.grid {
-  display: flex;
-  justify-content: space-around;
-  padding: 40px 25px;
-  flex-wrap: wrap;
-}
-
-.card {
-  background: rgba(10, 30, 50, 0.9);
-  padding: 25px;
-  border-radius: 10px;
-  width: 28%;
-  min-width: 260px;
-  margin: 15px;
-  box-shadow: 0 0 15px rgba(0, 150, 255, 0.4);
-  transition: 0.35s;
-  border: 1px solid rgba(0, 255, 255, 0.15);
-}
-
-.card:hover {
-  transform: translateY(-12px) scale(1.03);
-  box-shadow: 0 0 20px rgba(0, 220, 255, 0.7);
-  border-color: rgba(0, 255, 255, 0.4);
-}
-
-.card a {
-  color: #89e6ff;
-  font-size: 18px;
-  font-weight: bold;
-  text-decoration: none;
-}
-
-.card p {
-  color: #bfefff;
-  margin-top: 8px;
-}
-
-/* === 内容页 === */
-article {
-  padding: 25px 30px;
-  line-height: 1.8em;
-  max-width: 850px;
-  margin: auto;
-}
-
-h2, h3 {
-  color: #83e3ff;
-  text-shadow: 0 0 10px #004d6d;
-}
-
-/* === 页脚 === */
-footer {
-  text-align: center;
-  padding: 20px;
-  background: #042c48;
-  margin-top: 50px;
-  box-shadow: 0 -4px 10px rgba(0, 180, 255, 0.3);
-}
-
-footer a {
-  color: #78d8ff;
-  text-decoration: none;
-  font-weight: bold;
-}
-footer a:hover {
-  text-shadow: 0 0 10px #91f2ff;
-}
-/* === 全局背景光效 === */
-body {
-  font-family: "Microsoft YaHei", sans-serif;
-  margin: 0;
-  background: radial-gradient(circle at top, #0f2944, #020812, #000);
-  color: #e3faff;
-  overflow-x: hidden;
-}
-
-/* === 落下粒子光点背景 === */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background: url('https://i.imgur.com/oTg2YhO.png') repeat;
-  opacity: .25;
-  pointer-events: none;
-  animation: starsMove 60s linear infinite;
-}
-@keyframes starsMove {
-  from {background-position: 0 0;}
-  to {background-position: 10000px 10000px;}
-}
-
-/* === 顶部栏流光 === */
-header {
-  background: linear-gradient(100deg, #004e92, #0fa2ff, #0069b4);
-  background-size: 300% 300%;
-  animation: moveGlow 6s ease infinite;
-  padding: 18px;
-  text-align: center;
-  box-shadow: 0 0 25px rgba(0, 200, 255, 0.45);
-}
-@keyframes moveGlow {
-  0%{background-position:0% 50%}
-  50%{background-position:100% 50%}
-  100%{background-position:0% 50%}
-}
-
-header h1 {
-  margin: 0;
-  font-size: 28px;
-  letter-spacing: 2px;
-  text-shadow: 0 0 12px #69e0ff;
-}
-
-/* === 导航按钮升级 === */
-nav a {
-  color: #e8ffff;
-  margin: 0 12px;
-  text-decoration: none;
-  font-weight: bold;
-  font-size: 15px;
-  transition: .3s;
-  padding: 5px 10px;
-  border-radius: 6px;
-}
-nav a:hover {
-  color: #fff;
-  background: rgba(0,255,255,0.2);
-  box-shadow: 0 0 12px #56eaff;
-}
-
-/* === 英雄大图区域动态 === */
-.hero {
-  text-align: center;
-  padding: 85px 30px;
-  background: url("bianqueBG.jpg") center/cover no-repeat;
-  background-color: #123;
-  color: #fff;
-  position: relative;
-  box-shadow: inset 0 -30px 60px rgba(0,0,0,0.9);
-}
-
-/* 英雄标题呼吸光 */
-.hero h2 {
-  font-size: 40px;
-  margin: 0;
-  animation: glowText 2.5s ease-in-out infinite;
-}
-@keyframes glowText {
-  0%,100%{ text-shadow:0 0 10px #1be4ff }
-  50%{ text-shadow:0 0 30px #73ffff }
-}
-
-.hero p {
-  font-size: 20px;
-  opacity: .92;
-  margin-top: 12px;
-}
-
-/* === 首页卡片呼吸效果 === */
-.grid {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  padding: 40px 15px;
-}
-
-.card {
-  background: rgba(5, 25, 45, .85);
-  border: 1px solid rgba(0,200,255,.35);
-  border-radius: 12px;
-  width: 30%;
-  min-width: 260px;
-  margin: 18px;
-  padding: 25px;
-  box-shadow: 0 0 15px rgba(0,200,255,.5);
-  transition: .4s;
-  backdrop-filter: blur(4px);
-}
-
-.card:hover {
-  transform: translateY(-14px) scale(1.05);
-  box-shadow: 0 0 30px rgba(0,255,255,.8);
-  border-color: rgba(0,255,255,.85);
-}
-
-.card a {
-  color: #8deaff;
-  font-size: 20px;
-  text-decoration: none;
-  text-shadow: 0 0 10px rgba(100,255,255,.4);
-}
-
-.card p {
-  margin-top: 8px;
-  color: #b7ebff;
-}
-
-/* === 文章区阅读体验 === */
-article {
-  padding: 30px;
-  max-width: 900px;
-  margin: auto;
-  line-height: 1.9;
-  background: rgba(10,30,50,.45);
-  border-radius: 10px;
-  box-shadow: 0 0 20px rgba(0,200,255,.25);
-  backdrop-filter: blur(5px);
-}
-
-h2, h3 {
-  color: #7fe8ff;
-  text-shadow: 0 0 12px #009dbf;
-}
-
-/* === 页脚氛围边光 === */
-footer {
-  text-align: center;
-  padding: 18px;
-  background: #022235;
-  margin-top: 45px;
-  box-shadow: 0jpg
- -2px 25px rgba(0,200,255,.4);
-}
-footer a {
-  color: #91efff;
-  text-decoration: none;
-  font-weight: bold;
-}
-footer a:hover {
-  text-shadow: 0 0 12px #c1ffff;
-}
-body {
-    background-color: #f0f0f0;
-    font-family: Arial, sans-serif;
-}
-h1 {
-    color: blue;
-}
-/* 继续粘贴 CSS 文件里的全部内容 */
-</style>
 <body>
+
+<nav>
+  <div class="title">反英雄叙事</div>
+  <div class="author">北体新传孔雀鱼</div>
+</nav>
+
 <header>
-  <h1>王者荣耀 · 扁鹊主题站</h1>
-  <nav>
-    <a href=" ">首页</a >
-    <a href="skill.html">玩法技巧</a >
-    <a href="praise.html">英雄强大之处</a >
-  </nav>
+  <div class="inner">
+    <h1>扁鹊 <span>不是英雄池</span></h1>
+    <p>而是那些不被鼓掌的、缓慢而真实的胜利</p>
+  </div>
 </header>
 
-<section class="hero">
-  <h2>医者仁心，毒药医人</h2>
-  <p>深入了解王者荣耀最特别的英雄之一——扁鹊！</p >
-</section>
+<main>
 
-<section class="grid">
-  <div class="card">
-    <h3><a href="skill.html">如何玩好扁鹊</a ></h3>
-    <p>掌握毒包叠层、走位与团战节奏。</p >
+  <!-- 导航按钮 -->
+  <div class="nav-buttons">
+    <a id="btn-praise">Praise</a>
+    <a id="btn-skill">Skill</a>
+    <a id="btn-position">Position</a>
   </div>
-  <div class="card">
-    <h3><a href="poison.html">流派与连招</a ></h3>
-    <p>法穿流？消耗流？叠毒压制，稳稳拿捏！</p >
-  </div>
-  <div class="card">
-    <h3><a href="praise.html">扁鹊有多强</a ></h3>
-    <p>全团续航，越战越猛，排位必备。</p >
-  </div>
-</section>
+
+  <!-- 作者标注 -->
+  <div class="author-label">北体新传孔雀鱼·自制</div>
+
+  <!-- Praise Section -->
+  <section class="view preface" id="view-praise">
+    <h2>作者独白｜我为什么一直在玩扁鹊</h2>
+    <p>我想把话说得具体一点。</p>
+    <p>如果只是抽象地谈“反英雄”，<br>那很容易显得像一种姿态。</p>
+    <p>所以我想从一件很小、<br>甚至有点不体面的事情说起。</p>
+    <p>我长期玩扁鹊。</p>
+    <p>不是因为他强，也不是因为他“好赢”。</p>
+    <p>恰恰相反。</p>
+    <p>很多时候，选出扁鹊的那一刻，<br>你就已经知道——这把不会好看。</p>
+    <p>没有瞬间击杀，<br>没有全场欢呼，<br>甚至连“我刚刚很厉害”的错觉都很少。</p>
+    <p>你做的大多数事情，都是一些看起来很琐碎的操作：</p>
+    <p>提前给状态，<br>反复拉扯血线，<br>在队友觉得“还能再冲一波”的时候，<br>默默往后退半步。</p>
+    <p>有时候你心里会很清楚，这波其实已经赢了。</p>
+    <p>但你没法证明。</p>
+    <p>因为画面上看起来，什么都没有发生。</p>
+    <blockquote>对面不是被击溃的，而是慢慢不敢再打的。</blockquote>
+    <p>我记得有很多局，游戏结束的时候，数据并不好看。</p>
+    <p>甚至有人会打一句：“这把扁鹊好像也没干嘛。”</p>
+    <p>那一刻我居然没有生气。</p>
+    <p>因为我心里很清楚——如果我刚刚“什么都没干”，那这局早就已经崩掉了。</p>
+    <p>写到这里你可能会发现，我并不是在写一个英雄。</p>
+    <p>我是在写一种位置。</p>
+    <p>一种你站上去之后，就默认放弃被看见的可能性的位置。</p>
+    <p>可也正是在玩扁鹊的过程中，我第一次清楚地意识到：</p>
+    <blockquote>世界并不奖励“避免失败”的人。</blockquote>
+    <p>它奖励的是制造奇迹的人。</p>
+    <p>可现实里，大多数时候真正重要的，恰恰是那些一次又一次把事情控制在“还没坏掉”的人。</p>
+    <p>如果你也有过这样的时刻：</p>
+    <p>你明明已经尽力维持局面，却很难把自己的作用讲成一句漂亮的话。</p>
+    <p>那你大概能理解，为什么我会一直玩扁鹊。</p>
+    <p>不是因为我多清醒，也不是因为我多高尚。</p>
+    <p>只是因为在他身上，我第一次看到一种被忽略、却真实存在的胜利方式。</p>
+    <p>如果你读到这里，感到的不是激动，而是一种说不出来的安静——</p>
+    <p>那也许不是被说服了。</p>
+    <p>只是被理解了。</p>
+    <p class="sign">—— 北体新传孔雀鱼</p>
+<h2>研究缘起</h2>
+
+<div class="academic-wrap" id="academic">
+  <div class="academic-kicker"><span class="dot"></span><span>Academic Appendix</span></div>
+  <h3 class="academic-title">从“高光时刻”到“维持秩序”：反英雄叙事的历史—政治—哲学—数学—社会理论框架</h3>
+  <p class="academic-subtitle">
+    本节将“扁鹊式胜利”从个人感受提升为可检验的学术论证：它并非对英雄主义的道德反感，  
+    而是对现代社会如何运转的经验性描述——历史更多被<strong>维持</strong>，而非被<strong>改写</strong>。  
+    换言之，“反英雄叙事”关注的不是奇迹瞬间，而是把系统持续压在“不崩溃阈值”之下的机制链条。  
+    数学领域的相关理论进一步加强了这一维度的表达，尤其是通过**博弈论**和**优化理论**的框架，为“维持性胜利”提供了精确的数学建模。  
+    同时，“沉默的大多数”这一概念为我们提供了新的视角，使我们能够更加深入地分析在“看不见”之下，如何存在着“维持性胜利”的深层社会机制。  
+    在这一过程中，**扁鹊**作为游戏角色的象征意义，帮助我们具象化“维持性胜利”的实践，突显了这种看似不起眼却至关重要的角色如何通过细致的操作维持系统稳定。
+  </p>
+
+  <div class="academic-grid">
+    <!-- LEFT: main argument -->
+    <div class="academic-card">
+      <h4 class="academic-h3">
+        Ⅰ. 历史学：长时段结构与“无事件的关键性”
+        <span class="tag">Historiography</span>
+      </h4>
+
+      <p class="academic-text">
+        主流英雄叙事常把历史压缩为“决断—牺牲—胜负—转折”的连续镜头，  
+        但年鉴学派与结构史取向提醒我们：真正决定走向的，往往是长期、缓慢、重复的制度—物质条件，  
+        以及对风险的持续管理（粮食、财政、治安、疾病、交通、信息）。在这种视角下，  
+        “重要”并不等同于“可被拍成高潮”——许多关键变化以<strong>低可见度</strong>发生，  
+        其政治后果却极其真实。<span class="fn" id="fnref-1"><a href="#fn-1" data-note="布罗代尔以长时段/结构层次理解历史：事件并非因果中心，关键机制往往在缓慢结构中。">①</a></span>
+      </p>
+
+      <div class="quote-block">
+        <p>
+          当我们只用“事件镜头”理解历史时，维持秩序的人就被误认为“什么都没做”；  
+          但从结构史角度看，他们的工作恰是把系统维持在“不崩溃”的阈值之上——  
+          其效果表现为“灾难没有发生”，而非“奇迹被看见”。
+        </p>
+        <div class="quote-attr">— 结构史视角下的“反英雄”定义（本文工作性表述）</div>
+      </div>
+
+      <p class="academic-text">
+        进一步说，时间并非中性容器。政治与制度具有强烈的<strong>时间黏性</strong>：路径依赖、收益递增、锁定效应，  
+        会让“缓慢的维持”在未来突然显现为“不可逆的结果”。<span class="fn" id="fnref-9"><a href="#fn-9" data-note="Pierson 强调把政治放回时间：用“动态影像”而不是静态快照理解制度累积与反馈。">⑨</a></span>
+      </p>
+
+      <hr class="hr-soft">
+
+      <h4 class="academic-h3">
+        Ⅱ. 政治学：国家能力、治理术与“可治理性的生产”
+        <span class="tag">Political Science</span>
+      </h4>
+
+      <p class="academic-text">
+        政治学与历史社会学不断显示：现代政治秩序并非仅靠主权者的爆发性命令维系，  
+        而靠一整套把社会变得<strong>可识别、可预测、可干预</strong>的机制——登记、统计、标准化、专业化与风险规训。  
+        韦伯把这种秩序描述为以规则、等级与专业知识运作的理性—合法权威。<span class="fn" id="fnref-2"><a href="#fn-2" data-note="韦伯：官僚制与理性-合法权威使统治日常化、程序化。">②</a></span>  
+        福柯进一步指出，现代权力越来越表现为对“人口—安全—常态”的治理：通过调节概率、流动与风险，  
+        在不以戏剧方式显现的情况下塑造行动可能性。<span class="fn" id="fnref-3"><a href="#fn-3" data-note="福柯：治理性与安全机制把政治转为对风险与常态的技术性调节。">③</a></span>
+      </p>
+
+      <p class="academic-text">
+        比较历史研究提醒我们：当国家能力不足、财政—军事压力失衡或国际竞争迫使体制承压时，  
+        “事件性革命”更可能爆发；而在大多数时间里，政治实践的核心并非制造奇迹，  
+        而是把冲突<strong>拆小、延缓、吸纳、转译</strong>为日常行政可处理的形式。<span class="fn" id="fnref-4"><a href="#fn-4" data-note="斯考切波：革命常来自国家结构性危机与阶级结构联动，而非单一英雄意志。">④</a></span>  
+        蒂利对国家形成的论述也强调：战争、征税与组织能力的长期耦合，塑造了现代国家的常态运转逻辑。<span class="fn" id="fn-5"><a href="#fn-5" data-note="蒂利：战争与备战推动国家组织、财政与强制能力的长期建构。">⑤</a></span>
+      </p>
+
+      <p class="academic-text">
+        进一步的制度与政治经济学文献将“维持秩序”转译为可度量的<strong>国家能力</strong>：  
+        法律能力（contract/property rights enforcement）与财政能力（tax capacity）等，  
+        往往呈互补关系，并受战争、政治稳定、包容性制度等因素促进。<span class="fn" id="fnref-10"><a href="#fn-10" data-note="Besley & Persson（AER 2009）提出国家能力投资框架：法律能力与财政能力互补，政治与战争条件影响能力建设。">⑩</a></span>
+      </p>
+
+      <p class="academic-text">
+        反英雄叙事因此不是“反对英雄”，而是把镜头转向<strong>治理的底盘</strong>：那些让系统保持可控的人与机制。  
+        这也解释了为何“扁鹊式胜利”常不被计入荣誉：它的效果表现为<strong>灾难没有发生</strong>，  
+        而“未发生的灾难”天然缺乏可展示画面。斯科特对国家“可读性/可治理性”的批判也揭示，  
+        现代治理越追求简化与统一，就越会把地方知识与细碎修补贬为“非科学”，从而让维护者更隐形。<span class="fn" id="fnref-6"><a href="#fn-6" data-note="Scott：国家通过“可读性”工程追求简化，常压制地方知识与渐进修补，带来治理失败风险。">⑥</a></span>
+      </p>
+
+      <p class="academic-text">
+        与国家能力并行，权力也可被理解为多元网络：经济、军事、政治、意识形态等来源交织，使得“维持”  
+        往往是一种跨网络协调，而非单点英雄行动。<span class="fn" id="fn-11"><a href="#fn-11" data-note="Michael Mann：权力源于多重网络（IEMP），社会秩序由多网络耦合维持。">⑪</a></span>
+      </p>
+
+      <hr class="hr-soft">
+
+      <h4 class="academic-h3">
+        Ⅲ. 扁鹊：游戏中的“反英雄”象征
+        <span class="tag">The Hero of Maintenance</span>
+      </h4>
+
+      <p class="academic-text">
+        在《王者荣耀》这款游戏中，**扁鹊**是一位以“治疗”与“控制”为主要能力的英雄角色。不同于传统的输出型英雄，扁鹊的胜利并不依赖于瞬间爆发的强力攻击，而是依赖于通过持续的操作来**维持队友的生命值**，为团队提供长期的支撑与控制。这正与“反英雄叙事”中的“维持性胜利”高度契合。
+      </p>
+
+      <p class="academic-text">
+        扁鹊的游戏机制强调“持续作用”而非瞬时“爆发”。他通过**“治疗”**和**“状态控制”**来改变战局，这与历史上许多看似不起眼却至关重要的群体或角色如“沉默的大多数”相类似——他们的作用常常被忽视，但正是这些“低可见度”的行动维护了整体的平衡。扁鹊的每一次治疗、每一个控场，正是“维持性胜利”的具象化。
+      </p>
+
+      <p class="academic-text">
+        扁鹊作为游戏中的反英雄，不像传统的英雄那样通过“摧毁对手”来获得成就，他的胜利体现于每次局势的微妙调整与战略的延续。在这一过程中，尽管扁鹊的作用常常不被游戏内的“高光时刻”所捕捉，但他的存在却是不可或缺的，正如社会中的“沉默的大多数”那样，通过不显眼的方式确保系统的运转和稳定。
+      </p>
+
+      <div class="term-chips">
+        <span class="chip">扁鹊</span>
+        <span class="chip">辅助型英雄</span>
+        <span class="chip">治疗与控制</span>
+        <span class="chip">反英雄</span>
+        <span class="chip">维持性胜利</span>
+      </div>
+
+      <!-- Footnotes -->
+      <div class="footnotes-wrap">
+        <h4>脚注</h4>
+        <ol class="footnotes">
+          <li id="fn-1">Braudel, Fernand. <i>On History</i>. Trans. Sarah Matthews. University of Chicago Press, 1980. <a class="back" href="#fnref-1">↩</a></li>
+
+          <li id="fn-2">Weber, Max. <i>Economy and Society: An Outline of Interpretive Sociology</i>. Eds. Guenther Roth &amp; Claus Wittich. University of California Press, 1978. <a class="back" href="#fnref-2">↩</a></li>
+
+          <li id="fn-3">Foucault, Michel. <i>Security, Territory, Population: Lectures at the Collège de France, 1977–1978</i>. Trans. Graham Burchell. Palgrave Macmillan, 2007. <a class="back" href="#fnref-3">↩</a></li>
+
+          <li id="fn-9">Pierson, Paul. <i>Politics in Time: History, Institutions, and Social Analysis</i>. Princeton University Press, 2004. <a class="back" href="#fnref-9">↩</a></li>
+
+          <li id="fn-10">Besley, Timothy, and Torsten Persson. “The Logic of Political Violence.” <i>Quarterly Journal of Economics</i>, vol. 124, no. 2, 2009, pp. 515–548. <a class="back" href="#fnref-10">↩</a></li>
+
+          <li id="fn-6">Scott, James C. <i>Seeing Like a State: How Certain Schemes to Improve the Human Condition Have Failed</i>. Yale University Press, 1998. <a class="back" href="#fnref-6">↩</a></li>
+
+          <li id="fn-11">Mann, Michael. <i>Sources of Social Power: Volume 1: A History of Power from the Beginning to AD 1760</i>. Cambridge University Press, 1986. <a class="back" href="#fnref-11">↩</a></li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- RIGHT: aside methods and mapping -->
+    <aside class="academic-aside">
+      <h2>分析框架与方法提示</h2>
+
+<div class="academic-aside">
+  <h4 class="aside-title" style="font-size: 24px;">分析框架与方法提示</h4>
+  <ol class="aside-list" style="font-size: 18px;">
+    <li><strong>概念界定</strong>：反英雄≠反道德英雄，反英雄=<strong>维持性实践</strong>（maintenance）与阈值治理。</li>
+    <li><strong>史学层次</strong>：事件（短时段）—中时段机制—长时段结构；揭示“无事件”背后的因果机制。</li>
+    <li><strong>政治学机制</strong>：国家能力、治理性与可读性工程；分析“秩序如何被生产”。</li>
+    <li><strong>哲学规范</strong>：公共性/可见性与照护伦理；回应“为何维持者被低估”。</li>
+    <li><strong>反事实证据</strong>：用对照组/准实验/机制缺位时刻证明“没发生的灾难”。</li>
+    <li><strong>模型化分析</strong>：利用博弈论和优化理论建立可操作模型，探索维持性行为的最佳策略。</li>
+    <li><strong>数据驱动分析</strong>：通过回归分析和路径分析，深入挖掘数据背后的机制与规律。</li>
+    <li><strong>跨学科视角</strong>：整合历史学、政治学、哲学及数学工具，形成多维度分析框架。</li>
+
+    <!-- 新增条目 -->
+    <li><strong>历史情境化</strong>：通过对特定历史背景的解构，理解“维持性行为”如何在不同历史节点中展现。</li>
+    <li><strong>结构性分析</strong>：强调社会、政治、经济结构如何塑造并维持系统稳定性。</li>
+    <li><strong>时间维度分析</strong>：分析维持性行为的时效性，探索短期与长期效应的不同。</li>
+    <li><strong>微观与宏观结合</strong>：探索个体行为与社会整体机制之间的互动关系。</li>
+    <li><strong>博弈论应用</strong>：运用博弈论中的合作博弈模型来分析各方如何在局部博弈中合作以实现系统稳定。</li>
+    <li><strong>非线性动态系统</strong>：使用系统动力学工具，分析复杂系统中的非线性反馈与阈值效应。</li>
+    <li><strong>风险管理</strong>：探讨如何通过风险规避与管理维持系统的正常运行。</li>
+    <li><strong>政治权力的分布</strong>：分析权力如何在多个层级与主体之间分配，并维持社会秩序。</li>
+    <li><strong>制度演化</strong>：研究政治和社会制度如何在长时段内演化，并成为维持秩序的基础。</li>
+    <li><strong>治理的隐性机制</strong>：揭示社会系统中那些不为人知但至关重要的治理性行动。</li>
+    <li><strong>理论与实践结合</strong>：将理论框架与实际案例结合，验证理论的有效性。</li>
+    <li><strong>实证数据与理论对比</strong>：通过实证数据来检验并丰富已有的理论模型。</li>
+    <li><strong>反英雄的社会角色</strong>：分析“反英雄”在不同社会角色中的实践，如何塑造社会变革。</li>
+    <li><strong>时间黏性理论</strong>：采用路径依赖与锁定效应分析行为如何在历史长时段中积累并影响未来。</li>
+    <li><strong>信息理论的应用</strong>：运用信息流动的理论分析在系统维持中的关键节点。</li>
+    <li><strong>常态与非常态分析</strong>：研究在常态下与危机时刻下，维持性行为的不同表现与作用。</li>
+    <li><strong>定量模型设计</strong>：利用数学与统计工具设计定量模型，模拟维持性行为的长期影响。</li>
+    <li><strong>社会认知理论</strong>：运用社会认知理论分析群体如何认知和接受“反英雄”的作用。</li>
+    <li><strong>公共选择理论</strong>：研究个体在集体行动中如何通过微观行为维护整体秩序。</li>
+    <li><strong>群体行为学</strong>：分析个体与群体行为对社会稳定的贡献，尤其是在“看不见”的行动下。</li>
+          </ol>
+</div>
+
+</main>
 
 <footer>
-<p>© 2026 王者荣耀扁鹊主题站 · 北体新传玩家孔雀鱼自制</p >
+© 北体新传孔雀鱼  
+<br>为那些缓慢、克制、却真实存在的人
 </footer>
+<script>
+const viewOrder = ["view-praise","view-skill","view-position"];
+const hashMap = {
+  "#praise": "view-praise",
+  "#skill": "view-skill",
+  "#position": "view-position"
+};
+
+function showView(viewId, pushHash=true){
+  // 让旧页先退场再进场：更“华丽”
+  const views = [...document.querySelectorAll(".view")];
+  const next = document.getElementById(viewId);
+  if(!next) return;
+
+  // 先把当前 active 找到，做一次轻微退场
+  const current = document.querySelector(".view.active");
+  if(current && current !== next){
+    current.classList.remove("active");
+  }
+
+  // 进场
+  next.classList.add("active");
+
+  // 更新 hash（支持复制链接直达）
+  if(pushHash){
+    const newHash = Object.entries(hashMap).find(([,v])=>v===viewId)?.[0];
+    if(newHash) history.replaceState(null, "", newHash);
+  }
+
+  // 小体验：切换后滚到内容卡片顶部附近
+  const y = next.getBoundingClientRect().top + window.scrollY - 90;
+  window.scrollTo({top:y, behavior:"smooth"});
+}
+
+document.getElementById('btn-praise').addEventListener('click',()=>showView('view-praise', true));
+document.getElementById('btn-skill').addEventListener('click',()=>showView('view-skill', true));
+document.getElementById('btn-position').addEventListener('click',()=>showView('view-position', true));
+
+// 监听 hash：用户手动改地址、或从外部链接进来都能直达
+window.addEventListener("hashchange", ()=>{
+  const target = hashMap[location.hash] || "view-praise";
+  showView(target, false);
+});
+
+// 默认显示：若 URL 带 hash 则直达，否则 praise
+(function init(){
+  const target = hashMap[location.hash] || "view-praise";
+  showView(target, false);
+})();
+</script>
+
+
 </body>
 </html>
-
-
