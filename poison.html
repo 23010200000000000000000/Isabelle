@@ -1,0 +1,413 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<title>扁鹊操作技巧与连招</title>
+<style>
+body {
+  font-family: "Microsoft YaHei", sans-serif;
+  margin: 0;
+  background: #101820;
+  color: #e6f4ff;
+}
+
+header {
+  background: linear-gradient(90deg, #0e6b9c, #409eff);
+  padding: 15px;
+  text-align: center;
+}
+
+nav a {
+  color: #fff;
+  margin: 0 12px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+nav a:hover {
+  text-shadow: 0 0 5px #b8f1ff;
+}
+
+.hero {
+  text-align: center;
+  padding: 60px;
+  background: url("assets/images/heroBG.jpg") no-repeat center/cover;
+  background-color: #123;
+  color: #fff;
+}
+
+.grid {
+  display: flex;
+  justify-content: space-around;
+  padding: 30px 20px;
+}
+
+.card {
+  background: #1a2833;
+  padding: 20px;
+  border-radius: 8px;
+  width: 30%;
+  box-shadow: 0 0 12px rgba(0, 200, 255, 0.3);
+  transition: 0.25s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0 18px rgba(0, 200, 255, 0.6);
+}
+
+article {
+  padding: 20px 30px;
+  line-height: 1.7em;
+}
+
+h1, h2, h3 {
+  color: #7dd1ff;
+}
+
+footer {
+  text-align: center;
+  padding: 20px;
+  background: #0e6b9c;
+  margin-top: 40px;
+}
+
+
+⸻
+/* === 整站基础 === */
+body {
+  font-family: "Microsoft YaHei", sans-serif;
+  margin: 0;
+  background: radial-gradient(circle at center, #0d1a27, #02070d);
+  color: #e8f8ff;
+}
+
+/* === 顶部栏 === */
+header {
+  background: linear-gradient(135deg, #074385, #0aa9ff, #0583c9);
+  padding: 18px 10px;
+  text-align: center;
+  box-shadow: 0 4px 16px rgba(0, 180, 255, 0.4);
+}
+
+header h1 {
+  margin: 0;
+  letter-spacing: 2px;
+  font-size: 26px;
+  font-weight: bold;
+  color: #d6f3ff;
+}
+
+/* === 导航菜单 === */
+nav a {
+  color: #fff;
+  margin: 0 15px;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 15px;
+  transition: 0.3s;
+}
+
+nav a:hover {
+  color: #aaf0ff;
+  text-shadow: 0 0 10px #6ff7ff;
+}
+
+/* === 首页大视觉 === */
+.hero {
+  text-align: center;
+  padding: 70px 30px;
+  background: url("../assets/images/heroBG.jpg") center/cover;
+  background-color: #123;
+  color: #fff;
+  box-shadow: inset 0 -20px 40px rgba(0,0,0,0.7);
+}
+
+.hero h2 {
+  font-size: 36px;
+  margin-bottom: 12px;
+  text-shadow: 0 0 15px #60eaff;
+}
+
+.hero p {
+  font-size: 18px;
+  opacity: 0.9;
+}
+
+/* === 首页卡片布局 === */
+.grid {
+  display: flex;
+  justify-content: space-around;
+  padding: 40px 25px;
+  flex-wrap: wrap;
+}
+
+.card {
+  background: rgba(10, 30, 50, 0.9);
+  padding: 25px;
+  border-radius: 10px;
+  width: 28%;
+  min-width: 260px;
+  margin: 15px;
+  box-shadow: 0 0 15px rgba(0, 150, 255, 0.4);
+  transition: 0.35s;
+  border: 1px solid rgba(0, 255, 255, 0.15);
+}
+
+.card:hover {
+  transform: translateY(-12px) scale(1.03);
+  box-shadow: 0 0 20px rgba(0, 220, 255, 0.7);
+  border-color: rgba(0, 255, 255, 0.4);
+}
+
+.card a {
+  color: #89e6ff;
+  font-size: 18px;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.card p {
+  color: #bfefff;
+  margin-top: 8px;
+}
+
+/* === 内容页 === */
+article {
+  padding: 25px 30px;
+  line-height: 1.8em;
+  max-width: 850px;
+  margin: auto;
+}
+
+h2, h3 {
+  color: #83e3ff;
+  text-shadow: 0 0 10px #004d6d;
+}
+
+/* === 页脚 === */
+footer {
+  text-align: center;
+  padding: 20px;
+  background: #042c48;
+  margin-top: 50px;
+  box-shadow: 0 -4px 10px rgba(0, 180, 255, 0.3);
+}
+
+footer a {
+  color: #78d8ff;
+  text-decoration: none;
+  font-weight: bold;
+}
+footer a:hover {
+  text-shadow: 0 0 10px #91f2ff;
+}
+/* === 全局背景光效 === */
+body {
+  font-family: "Microsoft YaHei", sans-serif;
+  margin: 0;
+  background: radial-gradient(circle at top, #0f2944, #020812, #000);
+  color: #e3faff;
+  overflow-x: hidden;
+}
+
+/* === 落下粒子光点背景 === */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: url('https://i.imgur.com/oTg2YhO.png') repeat;
+  opacity: .25;
+  pointer-events: none;
+  animation: starsMove 60s linear infinite;
+}
+@keyframes starsMove {
+  from {background-position: 0 0;}
+  to {background-position: 10000px 10000px;}
+}
+
+/* === 顶部栏流光 === */
+header {
+  background: linear-gradient(100deg, #004e92, #0fa2ff, #0069b4);
+  background-size: 300% 300%;
+  animation: moveGlow 6s ease infinite;
+  padding: 18px;
+  text-align: center;
+  box-shadow: 0 0 25px rgba(0, 200, 255, 0.45);
+}
+@keyframes moveGlow {
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+
+header h1 {
+  margin: 0;
+  font-size: 28px;
+  letter-spacing: 2px;
+  text-shadow: 0 0 12px #69e0ff;
+}
+
+/* === 导航按钮升级 === */
+nav a {
+  color: #e8ffff;
+  margin: 0 12px;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 15px;
+  transition: .3s;
+  padding: 5px 10px;
+  border-radius: 6px;
+}
+nav a:hover {
+  color: #fff;
+  background: rgba(0,255,255,0.2);
+  box-shadow: 0 0 12px #56eaff;
+}
+
+/* === 英雄大图区域动态 === */
+.hero {
+  text-align: center;
+  padding: 85px 30px;
+  background: url("../assets/images/heroBG.jpg") center/cover no-repeat;
+  background-color: #123;
+  color: #fff;
+  position: relative;
+  box-shadow: inset 0 -30px 60px rgba(0,0,0,0.9);
+}
+
+/* 英雄标题呼吸光 */
+.hero h2 {
+  font-size: 40px;
+  margin: 0;
+  animation: glowText 2.5s ease-in-out infinite;
+}
+@keyframes glowText {
+  0%,100%{ text-shadow:0 0 10px #1be4ff }
+  50%{ text-shadow:0 0 30px #73ffff }
+}
+
+.hero p {
+  font-size: 20px;
+  opacity: .92;
+  margin-top: 12px;
+}
+
+/* === 首页卡片呼吸效果 === */
+.grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 40px 15px;
+}
+
+.card {
+  background: rgba(5, 25, 45, .85);
+  border: 1px solid rgba(0,200,255,.35);
+  border-radius: 12px;
+  width: 30%;
+  min-width: 260px;
+  margin: 18px;
+  padding: 25px;
+  box-shadow: 0 0 15px rgba(0,200,255,.5);
+  transition: .4s;
+  backdrop-filter: blur(4px);
+}
+
+.card:hover {
+  transform: translateY(-14px) scale(1.05);
+  box-shadow: 0 0 30px rgba(0,255,255,.8);
+  border-color: rgba(0,255,255,.85);
+}
+
+.card a {
+  color: #8deaff;
+  font-size: 20px;
+  text-decoration: none;
+  text-shadow: 0 0 10px rgba(100,255,255,.4);
+}
+
+.card p {
+  margin-top: 8px;
+  color: #b7ebff;
+}
+
+/* === 文章区阅读体验 === */
+article {
+  padding: 30px;
+  max-width: 900px;
+  margin: auto;
+  line-height: 1.9;
+  background: rgba(10,30,50,.45);
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0,200,255,.25);
+  backdrop-filter: blur(5px);
+}
+
+h2, h3 {
+  color: #7fe8ff;
+  text-shadow: 0 0 12px #009dbf;
+}
+
+/* === 页脚氛围边光 === */
+footer {
+  text-align: center;
+  padding: 18px;
+  background: #022235;
+  margin-top: 45px;
+  box-shadow: 0 -2px 25px rgba(0,200,255,.4);
+}
+footer a {
+  color: #91efff;
+  text-decoration: none;
+  font-weight: bold;
+}
+footer a:hover {
+  text-shadow: 0 0 12px #c1ffff;
+}
+body {
+    background-color: #f0f0f0;
+    font-family: Arial, sans-serif;
+}
+h1 {
+    color: blue;
+}
+/* 继续粘贴 CSS 文件里的全部内容 */
+</style></head>
+<body>
+<header>
+  <h1>扁鹊操作技巧与连招</h1>
+  <nav>
+    <a href="index.html">首页</a >
+    <a href="skill.html">玩法技巧</a >
+    <a href="poison.html">操作连招</a >
+    <a href="praise.html">英雄强大之处</a >
+  </nav>
+</header>
+
+<article>
+  <h2>让敌人中毒直到绝望</h2>
+  <p>扁鹊核心玩法：叠毒、拉扯、持续输出。</p >
+
+  <h3>★ 基础技巧</h3>
+  <p>① 对线不断贴药瓶，让敌人不敢上前补刀。</p >
+  <p>② 四层毒后注意走位等待机会。</p >
+
+  <h3>★ 推荐连招顺序</h3>
+  <p>一技能点 → 二技能加速贴贴贴 → 普攻补毒 → 大招收割</p >
+
+  <h3>★ 团战思路</h3>
+  <p>扁鹊团战不是秒爆发，而是持续施压。</p >
+  <p>保持距离不断撒毒，等待叠层完成，然后一键爆发带走脆皮。</p >
+</article>
+
+<footer>
+<p><a href="skill.html">返回导航页</a ></p >
+</footer>
+</body>
+</html>
+
+
+⸻
+s
