@@ -1,415 +1,291 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<title>扁鹊玩法技巧</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>扁鹊技能机制｜持续输出的底层逻辑</title>
+
 <style>
-body {
-  font-family: "Microsoft YaHei", sans-serif;
-  margin: 0;
-  background: #101820;
-  color: #e6f4ff;
+:root{
+  --bg:#050b16;
+  --panel:rgba(14,36,62,.8);
+  --glass:rgba(255,255,255,.06);
+  --blue:#2fd4ff;
+  --blue-soft:#9fe7ff;
+  --text:#e6f6ff;
+  --sub:#9fb9cc;
+  --warn:#ffcf5c;
 }
 
-header {
-  background: linear-gradient(90deg, #0e6b9c, #409eff);
-  padding: 15px;
-  text-align: center;
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:"Microsoft YaHei","Segoe UI",sans-serif;
+  background:
+    radial-gradient(circle at 20% 0%,#0c2a44,#050b16 70%),
+    radial-gradient(circle at 80% 100%,#061a30,#050b16 70%);
+  color:var(--text);
 }
 
-nav a {
-  color: #fff;
-  margin: 0 12px;
-  text-decoration: none;
-  font-weight: bold;
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  background:url("https://i.imgur.com/oTg2YhO.png") repeat;
+  opacity:.15;
+  animation:stars 110s linear infinite;
+  pointer-events:none;
+}
+@keyframes stars{
+  from{background-position:0 0}
+  to{background-position:10000px 14000px}
 }
 
-nav a:hover {
-  text-shadow: 0 0 5px #b8f1ff;
+/* 顶部导航 */
+nav{
+  position:sticky;
+  top:0;
+  z-index:10;
+  display:flex;
+  align-items:center;
+  gap:18px;
+  padding:14px 24px;
+  backdrop-filter:blur(14px);
+  background:rgba(5,15,30,.85);
+}
+nav .logo{
+  color:var(--blue);
+  font-weight:bold;
+  letter-spacing:2px;
+}
+nav a{
+  color:var(--blue-soft);
+  text-decoration:none;
+  font-size:14px;
+}
+nav a:hover{color:#fff}
+nav .brand{
+  margin-left:auto;
+  font-size:13px;
+  color:#7fdcff;
 }
 
-.hero {
-  text-align: center;
-  padding: 60px;
-  background: url("bianqueBG.jpg") no-repeat center/cover;
-  background-color: #123;
-  color: #fff;
+/* 页面头 */
+.header{
+  padding:90px 24px 70px;
+  text-align:center;
+}
+.header h1{
+  font-size:44px;
+  margin:0;
+  letter-spacing:5px;
+  text-shadow:0 0 28px rgba(47,212,255,.75);
+}
+.header p{
+  margin-top:18px;
+  color:var(--blue-soft);
+  font-size:18px;
+  letter-spacing:2px;
 }
 
-.grid {
-  display: flex;
-  justify-content: space-around;
-  padding: 30px 20px;
-}
-
-.card {
-  background: #1a2833;
-  padding: 20px;
-  border-radius: 8px;
-  width: 30%;
-  box-shadow: 0 0 12px rgba(0, 200, 255, 0.3);
-  transition: 0.25s;
-}
-
-.card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 0 18px rgba(0, 200, 255, 0.6);
-}
-
-article {
-  padding: 20px 30px;
-  line-height: 1.7em;
-}
-
-h1, h2, h3 {
-  color: #7dd1ff;
-}
-
-footer {
-  text-align: center;
-  padding: 20px;
-  background: #0e6b9c;
-  margin-top: 40px;
-}
-
-
-⸻
-/* === 整站基础 === */
-body {
-  font-family: "Microsoft YaHei", sans-serif;
-  margin: 0;
-  background: radial-gradient(circle at center, #0d1a27, #02070d);
-  color: #e8f8ff;
-}
-
-/* === 顶部栏 === */
-header {
-  background: linear-gradient(135deg, #074385, #0aa9ff, #0583c9);
-  padding: 18px 10px;
-  text-align: center;
-  box-shadow: 0 4px 16px rgba(0, 180, 255, 0.4);
-}
-
-header h1 {
-  margin: 0;
-  letter-spacing: 2px;
-  font-size: 26px;
-  font-weight: bold;
-  color: #d6f3ff;
-}
-
-/* === 导航菜单 === */
-nav a {
-  color: #fff;
-  margin: 0 15px;
-  text-decoration: none;
-  font-weight: bold;
-  font-size: 15px;
-  transition: 0.3s;
-}
-
-nav a:hover {
-  color: #aaf0ff;
-  text-shadow: 0 0 10px #6ff7ff;
-}
-
-/* === 首页大视觉 === */
-.hero {
-  text-align: center;
-  padding: 70px 30px;
-  background: url("bianqueBG.jpg") center/cover;
-  background-color: #123;
-  color: #fff;
-  box-shadow: inset 0 -20px 40px rgba(0,0,0,0.7);
-}
-
-.hero h2 {
-  font-size: 36px;
-  margin-bottom: 12px;
-  text-shadow: 0 0 15px #60eaff;
-}
-
-.hero p {
-  font-size: 18px;
-  opacity: 0.9;
-}
-
-/* === 首页卡片布局 === */
-.grid {
-  display: flex;
-  justify-content: space-around;
-  padding: 40px 25px;
-  flex-wrap: wrap;
-}
-
-.card {
-  background: rgba(10, 30, 50, 0.9);
-  padding: 25px;
-  border-radius: 10px;
-  width: 28%;
-  min-width: 260px;
-  margin: 15px;
-  box-shadow: 0 0 15px rgba(0, 150, 255, 0.4);
-  transition: 0.35s;
-  border: 1px solid rgba(0, 255, 255, 0.15);
-}
-
-.card:hover {
-  transform: translateY(-12px) scale(1.03);
-  box-shadow: 0 0 20px rgba(0, 220, 255, 0.7);
-  border-color: rgba(0, 255, 255, 0.4);
-}
-
-.card a {
-  color: #89e6ff;
-  font-size: 18px;
-  font-weight: bold;
-  text-decoration: none;
-}
-
-.card p {
-  color: #bfefff;
-  margin-top: 8px;
-}
-
-/* === 内容页 === */
-article {
-  padding: 25px 30px;
-  line-height: 1.8em;
-  max-width: 850px;
-  margin: auto;
-}
-
-h2, h3 {
-  color: #83e3ff;
-  text-shadow: 0 0 10px #004d6d;
-}
-
-/* === 页脚 === */
-footer {
-  text-align: center;
-  padding: 20px;
-  background: #042c48;
-  margin-top: 50px;
-  box-shadow: 0 -4px 10px rgba(0, 180, 255, 0.3);
-}
-
-footer a {
-  color: #78d8ff;
-  text-decoration: none;
-  font-weight: bold;
-}
-footer a:hover {
-  text-shadow: 0 0 10px #91f2ff;
-}
-/* === 全局背景光效 === */
-body {
-  font-family: "Microsoft YaHei", sans-serif;
-  margin: 0;
-  background: radial-gradient(circle at top, #0f2944, #020812, #000);
-  color: #e3faff;
-  overflow-x: hidden;
-}
-
-/* === 落下粒子光点背景 === */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background: url('https://i.imgur.com/oTg2YhO.png') repeat;
-  opacity: .25;
-  pointer-events: none;
-  animation: starsMove 60s linear infinite;
-}
-@keyframes starsMove {
-  from {background-position: 0 0;}
-  to {background-position: 10000px 10000px;}
-}
-
-/* === 顶部栏流光 === */
-header {
-  background: linear-gradient(100deg, #004e92, #0fa2ff, #0069b4);
-  background-size: 300% 300%;
-  animation: moveGlow 6s ease infinite;
-  padding: 18px;
-  text-align: center;
-  box-shadow: 0 0 25px rgba(0, 200, 255, 0.45);
-}
-@keyframes moveGlow {
-  0%{background-position:0% 50%}
-  50%{background-position:100% 50%}
-  100%{background-position:0% 50%}
-}
-
-header h1 {
-  margin: 0;
-  font-size: 28px;
-  letter-spacing: 2px;
-  text-shadow: 0 0 12px #69e0ff;
-}
-
-/* === 导航按钮升级 === */
-nav a {
-  color: #e8ffff;
-  margin: 0 12px;
-  text-decoration: none;
-  font-weight: bold;
-  font-size: 15px;
-  transition: .3s;
-  padding: 5px 10px;
-  border-radius: 6px;
-}
-nav a:hover {
-  color: #fff;
-  background: rgba(0,255,255,0.2);
-  box-shadow: 0 0 12px #56eaff;
-}
-
-/* === 英雄大图区域动态 === */
-.hero {
-  text-align: center;
-  padding: 85px 30px;
-  background: url("bianqueBG.jpg") center/cover no-repeat;
-  background-color: #123;
-  color: #fff;
-  position: relative;
-  box-shadow: inset 0 -30px 60px rgba(0,0,0,0.9);
-}
-
-/* 英雄标题呼吸光 */
-.hero h2 {
-  font-size: 40px;
-  margin: 0;
-  animation: glowText 2.5s ease-in-out infinite;
-}
-@keyframes glowText {
-  0%,100%{ text-shadow:0 0 10px #1be4ff }
-  50%{ text-shadow:0 0 30px #73ffff }
-}
-
-.hero p {
-  font-size: 20px;
-  opacity: .92;
-  margin-top: 12px;
-}
-
-/* === 首页卡片呼吸效果 === */
-.grid {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  padding: 40px 15px;
-}
-
-.card {
-  background: rgba(5, 25, 45, .85);
-  border: 1px solid rgba(0,200,255,.35);
-  border-radius: 12px;
-  width: 30%;
-  min-width: 260px;
-  margin: 18px;
-  padding: 25px;
-  box-shadow: 0 0 15px rgba(0,200,255,.5);
-  transition: .4s;
-  backdrop-filter: blur(4px);
-}
-
-.card:hover {
-  transform: translateY(-14px) scale(1.05);
-  box-shadow: 0 0 30px rgba(0,255,255,.8);
-  border-color: rgba(0,255,255,.85);
-}
-
-.card a {
-  color: #8deaff;
-  font-size: 20px;
-  text-decoration: none;
-  text-shadow: 0 0 10px rgba(100,255,255,.4);
-}
-
-.card p {
-  margin-top: 8px;
-  color: #b7ebff;
-}
-
-/* === 文章区阅读体验 === */
-article {
-  padding: 30px;
-  max-width: 900px;
-  margin: auto;
-  line-height: 1.9;
-  background: rgba(10,30,50,.45);
-  border-radius: 10px;
-  box-shadow: 0 0 20px rgba(0,200,255,.25);
-  backdrop-filter: blur(5px);
-}
-
-h2, h3 {
-  color: #7fe8ff;
-  text-shadow: 0 0 12px #009dbf;
-}
-
-/* === 页脚氛围边光 === */
-footer {
-  text-align: center;
-  padding: 18px;
-  background: #022235;
-  margin-top: 45px;
-  box-shadow: 0jpg
- -2px 25px rgba(0,200,255,.4);
-}
-footer a {
-  color: #91efff;
-  text-decoration: none;
-  font-weight: bold;
-}
-footer a:hover {
-  text-shadow: 0 0 12px #c1ffff;
-}
-body {
-    background-color: #f0f0f0;
-    font-family: Arial, sans-serif;
-}
-h1 {
-    color: #blue;
+/* 主体 */
+main{
+  max-width:1200px;
+  margin:auto;
+  padding:0 24px 140px;
 }
 section{
-  padding: 20px 30px;
-  line-height: 1.7em;
+  background:var(--panel);
+  border-radius:22px;
+  padding:46px;
+  margin-bottom:100px;
+  box-shadow:0 0 45px rgba(0,0,0,.45);
+}
+section h2{
+  margin-top:0;
+  font-size:32px;
+  color:var(--blue);
+  border-left:5px solid var(--blue);
+  padding-left:16px;
+}
+section h3{
+  margin-top:38px;
+  color:#7fdcff;
 }
 
-h1, h2, h3 {
-  color: #7dd1ff;
+.card{
+  background:var(--glass);
+  padding:28px;
+  border-radius:18px;
+  margin:28px 0;
+  box-shadow:inset 0 0 30px rgba(47,212,255,.18);
+}
+.card p, .card li{
+  color:var(--sub);
+  line-height:1.8;
 }
 
+.warning{
+  border-left:4px solid var(--warn);
+  padding-left:18px;
+  color:#ffe7a3;
+  margin:24px 0;
+}
+
+ul{padding-left:20px}
+li{margin:10px 0}
+
+/* 页脚 */
+footer{
+  text-align:center;
+  padding:50px 20px;
+  color:#6fa3c9;
+  font-size:14px;
+}
 </style>
-
-
-
+</head>
 
 <body>
-<header>
-  <h1>扁鹊玩法技巧导航</h1>
-  <nav>
-    <a href="index.html">首页</a >
-    <a href="skill.html">玩法技巧</a >
-    <a href="poison.html">操作连招</a >
-    <a href="praise.html">英雄强大之处</a >
-  </nav>
+
+<nav>
+  <div class="logo">扁鹊 · 技能机制</div>
+  <a href=" ">首页</a >
+  <a href="position.html">定位</a >
+  <a href="skill.html">技能</a >
+  <a href="praise.html">口碑</a >
+  <div class="brand">北体新传孔雀鱼 · 自制</div>
+</nav>
+
+<header class="header">
+  <h1>技能不是按钮</h1>
+  <p>而是时间、叠层与站场权的函数</p >
 </header>
 
+<main>
+
 <section>
-  <h2>选择你要深入学习的内容</h2>
-  <ul>
-    <nav><a href="poison.html"> · 毒包堆叠与连招方式</a></nav>
-    <nav><a href="praise.html"> · 为什么扁鹊这么强？</a ></nav>
-  </ul>
+<h2>总览：扁鹊技能的底层模型</h2>
+
+<div class="card">
+<p>
+扁鹊的技能系统<strong>不以“单次命中”为价值核心</strong>，  
+而以「<strong>在单位时间内，能否持续施加毒层</strong>」作为强度判定标准。
+</p >
+</div>
+
+<ul>
+<li>技能不是爆发，而是<strong>状态累积</strong></li>
+<li>空技能 ≠ 失败，不丢技能 = 失败</li>
+<li>毒层存在的时间，决定了团战归属</li>
+</ul>
 </section>
 
+<section>
+<h2>被动技能：恶毒（整个英雄的灵魂）</h2>
+
+<div class="card">
+<p>
+每一次技能或普攻命中，都会为目标叠加毒层。  
+毒层并非线性增长，而是<strong>越往后越具威胁</strong>。
+</p >
+</div>
+
+<h3>高端理解</h3>
+<ul>
+<li>10 层 ≈ 一次中等爆发大招</li>
+<li>毒层的意义是<strong>限制站位，而非击杀</strong></li>
+<li>前排中毒 = 后排空间被压缩</li>
+</ul>
+
+<div class="warning">
+新手最大误区：  
+<strong>只盯着残血</strong>，忽略“持续中毒的满血敌人”。
+</div>
+</section>
+
+<section>
+<h2>一技能：节奏发生器</h2>
+
+<div class="card">
+<p>
+这是扁鹊<strong>最重要的技能</strong>，不是因为伤害，而是因为它决定了：
+</p >
+<ul>
+<li>毒层是否能不断刷新</li>
+<li>敌人是否被迫后退</li>
+<li>你是否拥有站场资格</li>
+</ul>
+</div>
+
+<h3>使用原则</h3>
+<ul>
+<li>CD 转好就丢</li>
+<li>宁愿打前排，也不要等后排</li>
+<li>目标不是命中，而是<strong>覆盖区域</strong></li>
+</ul>
+</section>
+
+<section>
+<h2>二技能：叠层效率之王</h2>
+
+<div class="card">
+<p>
+二技能是扁鹊<strong>单位时间内叠毒效率最高</strong>的手段，  
+决定你是否能在 6 秒内进入“不可处理状态”。
+</p >
+</div>
+
+<h3>高端技巧</h3>
+<ul>
+<li>近距离命中价值远高于远距离</li>
+<li>2 → 1 比 1 → 2 更快叠满</li>
+<li>打中一人 ≠ 成功，打中前排才是成功</li>
+</ul>
+</section>
+
+<section>
+<h2>三技能：时间回溯器</h2>
+
+<div class="card">
+<p>
+大招不是“救命技能”，  
+而是<strong>延长团战生命周期的时间工具</strong>。
+</p >
+</div>
+
+<h3>职业级开大逻辑</h3>
+<ul>
+<li>队友<strong>半血</strong>即可开</li>
+<li>目的不是回血，而是<strong>重置战斗时间</strong></li>
+<li>开大瞬间，毒层收益翻倍</li>
+</ul>
+
+<div class="warning">
+90% 输掉的团战，都是<strong>大招开晚</strong>。
+</div>
+</section>
+
+<section>
+<h2>技能循环的真正意义</h2>
+
+<div class="card">
+<p>
+扁鹊不存在“标准连招”，  
+只有一个目标：
+</p >
+<ul>
+<li>让毒层<strong>永远不要断</strong></li>
+<li>让敌人<strong>无法重新进场</strong></li>
+<li>让时间<strong>站在你这边</strong></li>
+</ul>
+</div>
+</section>
+
+</main>
+
 <footer>
-<p>返回 <a href="index.html">首页</a ></p >
+© 北体新传孔雀鱼 · 自制
 </footer>
+
 </body>
 </html>
-
-
